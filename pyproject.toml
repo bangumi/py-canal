@@ -1,0 +1,60 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "chii"
+version = "0.0.4"
+description = ""
+authors = []
+
+[tool.poetry.dependencies]
+python = "^3.10"
+# dependencies
+loguru = "==0.7.0"
+python-dotenv = "1.0.0"
+pydantic-settings = "^2.0.0"
+kafka-python = "^2.0.2"
+pymemcache = "^4.0.0"
+redis = "^4.6.0"
+msgspec = "^0.16.0"
+
+[tool.poetry.group.dev.dependencies]
+# linter and formatter
+pre-commit = "==3.3.3"
+mypy = "==1.4.1"
+watchgod = "0.8.2"
+
+[tool.poetry-plugin-bump]
+commit_msg = 'bump: v{version}'
+
+[tool.coverage.run]
+concurrency = ['thread', 'greenlet']
+
+[tool.coverage.report]
+exclude_lines = [
+  'pragma: no cover',
+  'if TYPE_CHECKING:',
+  'if __name__ == "__main__":',
+  'raise NotImplementedError'
+]
+
+[tool.pytest.ini_options]
+addopts = '-rav'
+env = ['D:TESTING=true', 'SQLALCHEMY_WARN_20=true']
+
+[tool.mypy]
+ignore_missing_imports = true
+warn_return_any = true
+warn_unused_configs = true
+show_error_codes = true
+pretty = true
+plugins = ['sqlalchemy.ext.mypy.plugin', 'pydantic.mypy']
+
+[tool.black]
+target_version = ['py311']
+
+[tool.ruff]
+extend-exclude = [".venv", "api"]
+
+target-version = "py311"
