@@ -4,6 +4,7 @@ import msgspec
 import pymemcache
 from kafka import KafkaConsumer
 from kafka.consumer.fetcher import ConsumerRecord
+from loguru import logger
 
 from app.config import config
 
@@ -67,11 +68,13 @@ def user_collection_change():
         raise ValueError(f"event broker not support {config.broker.scheme!r}")
 
 
+@logger.catch
 def main():
+    logger.info("start")
     client = pymemcache.Client(config.memcached)
     while True:
         for user_id, subject_id in kafka_events():
-            print(user_id, subject_id)
+            logger.debug("event: user {} subject {}", user_id, subject_id)
             client.delete(f"{user_id}:{subject_id}", True)
 
 
