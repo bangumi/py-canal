@@ -1,9 +1,9 @@
 import os
 
 import yarl
-from dotenv import load_dotenv
+from dotenv import load_dotenv as _load_dotenv
 
-load_dotenv()
+_load_dotenv()
 
 broker = yarl.URL(os.environ["BROKER"])
 memcached: str = os.environ["MEMCACHED"]

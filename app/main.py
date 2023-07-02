@@ -35,7 +35,7 @@ class ChiiInterest(msgspec.Struct):
 class ValuePayload(msgspec.Struct):
     before: ChiiInterest | None
     after: ChiiInterest | None
-    op: str
+    op: str  # 'r', 'c', 'd' ...
 
 
 class Value(msgspec.Struct):
