@@ -6,7 +6,7 @@ from kafka import KafkaConsumer
 from kafka.consumer.fetcher import ConsumerRecord
 from loguru import logger
 
-from app.config import config
+from app import config
 
 
 class ChiiInterest(msgspec.Struct):
@@ -59,13 +59,6 @@ def kafka_events() -> Iterable[tuple[int, int]]:
             yield after.interest_uid, after.interest_subject_id
         elif before is not None:
             yield before.interest_uid, before.interest_subject_id
-
-
-def user_collection_change():
-    if config.broker.scheme == "kafka":
-        yield from kafka_events()
-    else:
-        raise ValueError(f"event broker not support {config.broker.scheme!r}")
 
 
 @logger.catch

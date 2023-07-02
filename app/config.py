@@ -1,17 +1,15 @@
+import os
+
+import yarl
 from dotenv import load_dotenv
-from pydantic import AnyUrl, Field
-from pydantic_settings import BaseSettings
-
-
-class Settings(BaseSettings):
-    broker: AnyUrl = Field(env="BROKER")
-    memcached: str = Field(env="MEMCACHED")
-
-    COMMIT_REF: str = Field(env="COMMIT_REF", default="dev")
-
 
 load_dotenv()
-config = Settings()
+
+broker = yarl.URL(os.environ["BROKER"])
+memcached: str = os.environ["MEMCACHED"]
+COMMIT_REF: str = os.environ.get("COMMIT_REF", "dev")
 
 if __name__ == "__main__":
-    print(config.model_dump())
+    print(f"{broker=}")
+    print(f"{memcached=}")
+    print(f"{COMMIT_REF=}")
