@@ -19,4 +19,6 @@ COPY --from=poetry /src/requirements.txt ./requirements.txt
 
 RUN pip install -r requirements.txt --no-cache-dir
 
+COPY . .
+
 ENTRYPOINT [ "python", "./app/main.py" ]
