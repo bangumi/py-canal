@@ -1,3 +1,5 @@
+# syntax = docker/dockerfile:1
+
 ### convert poetry.lock to requirements.txt ###
 FROM python:3.11-slim AS poetry
 
