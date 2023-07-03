@@ -65,6 +65,8 @@ def kafka_events() -> Iterable[tuple[int, int]]:
 def main():
     logger.info("start")
     client = pymemcache.Client(config.memcached)
+    v = client.version().decode()
+    logger.info("memcached version {}", v)
     while True:
         for user_id, subject_id in kafka_events():
             logger.debug("event: user {} subject {}", user_id, subject_id)
