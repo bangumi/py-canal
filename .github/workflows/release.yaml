@@ -14,7 +14,7 @@ jobs:
       IMAGE: "ghcr.io/${{ github.repository_owner }}/purge-old-cache"
 
     concurrency:
-      group: ${{ github.workflow }}-${{ github.sha }}
+      group: ${{ github.workflow }}
       cancel-in-progress: false
 
     steps:
