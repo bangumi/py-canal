@@ -1,5 +1,3 @@
-# syntax = docker/dockerfile:1
-
 ### convert poetry.lock to requirements.txt ###
 FROM python:3.11-slim AS poetry
 
@@ -7,7 +5,7 @@ WORKDIR /src
 COPY . ./
 COPY pyproject.toml poetry.lock ./
 
-RUN --mount=type=cache,target=/root/.cache/pip pip install poetry &&\
+RUN pip install poetry &&\
   poetry export -f requirements.txt --output requirements.txt
 
 ### final image ###
