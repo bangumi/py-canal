@@ -5,7 +5,7 @@ WORKDIR /src
 COPY . ./
 COPY pyproject.toml poetry.lock ./
 
-RUN pip install poetry &&\
+RUN --mount=type=cache,mode=0777,target=/root/.cache/pip pip install poetry &&\
   poetry export -f requirements.txt --output requirements.txt
 
 ### final image ###
