@@ -31,6 +31,7 @@ jobs:
           TZ: UTC
 
       - name: Set up Docker Buildx
+        id: buildx
         uses: docker/setup-buildx-action@v2
 
       - name: Docker metadata
