@@ -1,7 +1,7 @@
 ### convert poetry.lock to requirements.txt ###
 FROM python:3.11-slim AS poetry
 
-WORKDIR /app
+WORKDIR /src
 COPY . ./
 COPY pyproject.toml poetry.lock ./
 
@@ -11,14 +11,12 @@ RUN pip install poetry &&\
 ### final image ###
 FROM python:3.11-slim
 
-WORKDIR /app
+WORKDIR /src
 
-ENV PYTHONPATH=/app
+ENV PYTHONPATH=/src
 
-COPY --from=poetry /app/requirements.txt ./requirements.txt
+COPY --from=poetry /src/requirements.txt ./requirements.txt
 
 RUN pip install -r requirements.txt --no-cache-dir
 
-WORKDIR /app
-
-ENTRYPOINT [ "python", "./main.py" ]
+ENTRYPOINT [ "python", "./app/main.py" ]
