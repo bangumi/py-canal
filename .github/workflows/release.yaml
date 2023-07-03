@@ -11,7 +11,7 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     env:
-      IMAGE: "ghcr.io/${{ github.repository_owner }}/clean-old-site-cache"
+      IMAGE: "ghcr.io/${{ github.repository_owner }}/purge-old-cache"
 
     concurrency:
       group: ${{ github.workflow }}-${{ github.sha }}
