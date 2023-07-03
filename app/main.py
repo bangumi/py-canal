@@ -52,6 +52,8 @@ def kafka_events() -> Iterable[tuple[int, int]]:
 
     msg: ConsumerRecord
     for msg in consumer:
+        if not msg.value:
+            continue
         value = msgspec.json.decode(msg.value, type=Value)
         before = value.payload.before
         after = value.payload.after
