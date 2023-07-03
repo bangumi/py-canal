@@ -26,31 +26,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ github.token }}
 
-      - name: build base docker image
-        env:
-          FILES_HASH: "${{ hashFiles('poetry.lock', 'etc/*.dockerfile') }}"
-        run: |
-          export "TAG_HASH=base-${FILES_HASH}"
-          echo "TAG_HASH=${TAG_HASH}" >>$GITHUB_ENV
-
-          if ! docker pull "${IMAGE}:${TAG_HASH}"; then
-            echo "NEED_BUILD_BASE=true" >>$GITHUB_ENV
-          else
-            echo "NEED_BUILD_BASE=false" >>$GITHUB_ENV
-          fi
-
-      - name: Build Base Docker Image (if needed)
-        uses: docker/build-push-action@v4
-        if: ${{ env.NEED_BUILD_BASE }}
-        with:
-          context: ./
-          file: ./etc/base.dockerfile
-          provenance: false
-          push: true
-          tags: ${{ env.IMAGE }}:${{ env.TAG_HASH }}
-
-      - run: docker tag "${IMAGE}:${TAG_HASH}" base-image
-
       - run: echo "SHA=$(git show --no-patch --no-notes --date=short-local --pretty='%as-%h')" >> $GITHUB_ENV
         env:
           TZ: UTC
@@ -74,7 +49,6 @@ jobs:
         with:
           context: ./
           provenance: false
-          file: ./etc/final.dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
