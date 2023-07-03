@@ -41,7 +41,7 @@ exclude_lines = [
 
 [tool.pytest.ini_options]
 addopts = '-rav'
-env = ['D:TESTING=true', 'SQLALCHEMY_WARN_20=true']
+env = ['D:TESTING=true']
 
 [tool.mypy]
 ignore_missing_imports = true
@@ -49,7 +49,7 @@ warn_return_any = true
 warn_unused_configs = true
 show_error_codes = true
 pretty = true
-plugins = ['sqlalchemy.ext.mypy.plugin', 'pydantic.mypy']
+plugins = []
 
 [tool.black]
 target_version = ['py311']
