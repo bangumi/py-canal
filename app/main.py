@@ -68,7 +68,7 @@ def main():
     while True:
         for user_id, subject_id in kafka_events():
             logger.debug("event: user {} subject {}", user_id, subject_id)
-            client.delete(f"{user_id}:{subject_id}", True)
+            client.delete(f"MC_USR_STARRED_COLLECT{user_id}", True)
 
 
 if __name__ == "__main__":
