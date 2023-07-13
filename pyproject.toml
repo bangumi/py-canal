@@ -15,7 +15,7 @@ loguru = "==0.7.0"
 python-dotenv = "1.0.0"
 kafka-python = "2.0.2"
 pymemcache = "4.0.0"
-msgspec = "0.16.0"
+msgspec = "0.17.0"
 yarl = "1.9.2"
 
 [tool.poetry.group.dev.dependencies]
