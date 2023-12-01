@@ -16,7 +16,7 @@ python-dotenv = "1.0.0"
 kafka-python = "2.0.2"
 pymemcache = "4.0.0"
 msgspec = "0.18.4"
-yarl = "1.9.2"
+yarl = "1.9.3"
 
 [tool.poetry.group.dev.dependencies]
 # linter and formatter
