@@ -20,7 +20,7 @@ yarl = "1.9.4"
 
 [tool.poetry.group.dev.dependencies]
 # linter and formatter
-pre-commit = "==3.6.0"
+pre-commit = "==3.6.2"
 mypy = "==1.8.0"
 watchgod = "0.8.2"
 
