@@ -1,3 +1,4 @@
+import contextlib
 from typing import Any, cast
 from dataclasses import dataclass
 from collections.abc import Iterable
@@ -45,7 +46,9 @@ def __wiki_date_redis_events(dsn: str) -> Iterable[ChiiSubject]:
     while True:
         changes = cast(
             "list[Any]",
-            r.xreadgroup(group_name, "py-canal", {stream: last_msg_id[stream]}),
+            r.xreadgroup(
+                group_name, "py-canal", {stream: last_msg_id[stream]}, noack=True
+            ),
         )
         for change in changes:
             stream_name, real_changes = change
@@ -54,8 +57,6 @@ def __wiki_date_redis_events(dsn: str) -> Iterable[ChiiSubject]:
                 subject: KafkaValue[ChiiSubject] = decoder.decode(value)
                 before = subject.payload.before
                 after = subject.payload.after
-
-                r.xack(stream, group_name, id)
 
                 if subject.payload.op == Op.Delete:
                     continue
@@ -118,16 +119,19 @@ def wiki_date() -> None:
             except WikiSyntaxError:
                 continue
 
-            date = extract_date(w, subject.subject_type_id, subject.subject_platform)
-            if date is None:
-                continue
-
-            with engine.connect() as conn:
-                conn.connection.cursor().execute(
-                    """
-                        update chii_subject_fields
-                        set field_year = %s, field_mon = %s, field_date = %s
-                        where field_sid = %s
-                        """,
-                    [date.year, date.month, date.to_date(), subject.subject_id],
+            with contextlib.suppress(Exception):
+                date = extract_date(
+                    w, subject.subject_type_id, subject.subject_platform
                 )
+                if date is None:
+                    continue
+
+                with engine.connect() as conn:
+                    conn.connection.cursor().execute(
+                        """
+                            update chii_subject_fields
+                            set field_year = %s, field_mon = %s, field_date = %s
+                            where field_sid = %s
+                            """,
+                        [date.year, date.month, date.to_date(), subject.subject_id],
+                    )
