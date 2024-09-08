@@ -27,7 +27,7 @@ def __wiki_date_kafka_events() -> Iterable[ChiiSubject]:
     consumer = KafkaConsumer(
         "debezium.chii.bangumi.chii_subjects",
         group_id="py-cache-clean",
-        bootstrap_servers=f"{config.broker.host}:{config.broker.port}",
+        bootstrap_servers=f"{config.broker.hostname}:{config.broker.port}",
         auto_offset_reset="earliest",
     )
 
