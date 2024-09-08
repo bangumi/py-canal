@@ -40,12 +40,12 @@ exclude_lines = [
 addopts = '-rav'
 
 [tool.mypy]
+strict = true
+warn_no_return = false
+check_untyped_defs = true
+warn_return_any = false
+explicit_package_bases = true
 ignore_missing_imports = true
-warn_return_any = true
-warn_unused_configs = true
-show_error_codes = true
-pretty = true
-plugins = []
 
 [tool.black]
 target_version = ['py310']

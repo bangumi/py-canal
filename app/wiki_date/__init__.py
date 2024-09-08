@@ -56,7 +56,7 @@ def __wiki_date_kafka_events() -> Iterable[ChiiSubject]:
 
 
 @logger.catch
-def wiki_date():
+def wiki_date() -> None:
     logger.info("start")
     engine = create_engine()
 
@@ -75,7 +75,16 @@ def wiki_date():
             with engine.connect() as conn:
                 conn.execute(
                     text(
-                        "update chii_subject_fields set field_year = %s, field_mon = %s, field_date = %s where field_sid = %s"
+                        """
+                        update chii_subject_fields
+                        set field_year = :year, field_mon = :month, field_date = :date
+                        where field_sid = :id
+                        """
                     ),
-                    [date.year, date.month, date.to_date(), subject.subject_id],
+                    {
+                        "year": date.year,
+                        "month": date.month,
+                        "date": date.to_date(),
+                        "id": subject.subject_id,
+                    },
                 )

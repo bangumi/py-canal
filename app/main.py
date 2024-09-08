@@ -3,7 +3,7 @@ from threading import Thread
 from app.wiki_date import wiki_date
 
 
-def main():
+def main() -> None:
     threads = [
         Thread(target=wiki_date),
     ]
