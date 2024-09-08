@@ -17,5 +17,6 @@ def create_engine() -> Engine:
         pool_recycle=3600,
         isolation_level="AUTOCOMMIT",
         pool_size=10,
+        pool_reset_on_return=False,
         max_overflow=0,
     )

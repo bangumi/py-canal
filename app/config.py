@@ -10,3 +10,5 @@ MYSQL_PORT: str = os.getenv("MYSQL_PORT") or "3306"
 MYSQL_USER: str = os.getenv("MYSQL_USER") or "user"
 MYSQL_PASS: str = os.getenv("MYSQL_PASS") or "password"
 MYSQL_DB: str = os.getenv("MYSQL_DB") or "bangumi"
+
+redis_dsn = os.environ.get("REDIS_DNS") or "redis://:redis-pass@192.168.1.3:6379/0"
