@@ -8,17 +8,17 @@ loguru = "==0.7.2"
 kafka-python = "2.0.2"
 pymemcache = "4.0.0"
 msgspec = "0.18.6"
-bgm-tv-wiki = "^0.0.12"
-sqlalchemy = "^2.0.34"
-pymysql = "^1.1.1"
-redis = "^5.0.8"
+bgm-tv-wiki = "0.0.12"
+sqlalchemy = "2.0.34"
+pymysql = "1.1.1"
+redis = "5.0.8"
 
 [tool.poetry.group.dev.dependencies]
 # linter and formatter
 pre-commit = "==3.8.0"
 mypy = "==1.11.1"
-pytest = "^8.3.2"
-pytest-github-actions-annotate-failures = "^0.2.0"
+pytest = "8.3.2"
+pytest-github-actions-annotate-failures = "0.2.0"
 
 [tool.poetry-plugin-bump]
 commit_msg = 'bump: v{version}'
