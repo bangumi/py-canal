@@ -1,24 +1,28 @@
 ### convert poetry.lock to requirements.txt ###
-FROM python:3.11-slim AS poetry
+FROM python:3.10-slim@sha256:2407c61b1a18067393fecd8a22cf6fceede893b6aaca817bf9fbfe65e33614a3 AS poetry
 
-WORKDIR /src
-COPY . ./
+WORKDIR /app
+
+COPY requirements-poetry.txt ./
+RUN --mount=type=cache,target=/root/.cache/pip pip install -r requirements-poetry.txt
+
 COPY pyproject.toml poetry.lock ./
-
-RUN pip install poetry &&\
-  poetry export -f requirements.txt --output requirements.txt
+RUN --mount=type=cache,target=/root/.cache/pip poetry export -f requirements.txt --output requirements.txt --without-hashes
 
 ### final image ###
-FROM python:3.11-slim
+FROM python:3.10-slim@sha256:2407c61b1a18067393fecd8a22cf6fceede893b6aaca817bf9fbfe65e33614a3
 
-WORKDIR /src
+WORKDIR /app
 
-ENV PYTHONPATH=/src
+ENV PYTHONPATH=/app
 
-COPY --from=poetry /src/requirements.txt ./requirements.txt
+COPY --from=poetry /app/requirements.txt ./requirements.txt
 
-RUN pip install -r requirements.txt --no-cache-dir
+RUN --mount=type=cache,target=/root/.cache/pip pip install -U pip && \
+    pip install -r requirements.txt
 
-COPY . .
+WORKDIR /app
 
 ENTRYPOINT [ "python", "./app/main.py" ]
+
+COPY . .
