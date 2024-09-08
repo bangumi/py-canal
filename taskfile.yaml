@@ -42,3 +42,7 @@ tasks:
       - poetry lock --no-update
       - dos2unix.exe poetry.lock
       - poetry install --sync
+
+  sync:
+    cmds:
+      - poetry install --sync
