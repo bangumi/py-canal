@@ -37,7 +37,7 @@ jobs:
       - name: mypy
         run: mypy --show-column-numbers app
 
-  lint:
+  pre-commit:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
