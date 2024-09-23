@@ -58,7 +58,9 @@ def clean_cache_kafka_events() -> Iterable[tuple[int, int]]:
 @logger.catch
 def clean_cache() -> None:
     logger.info("start")
-    client = pymemcache.Client(config.memcached)
+    client = pymemcache.Client(
+        server=(config.memcached.hostname, config.memcached.port)
+    )
     v = client.version().decode()
     logger.info("memcached version {}", v)
     while True:
