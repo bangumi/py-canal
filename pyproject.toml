@@ -19,6 +19,7 @@ pre-commit = "==3.8.0"
 mypy = "==1.11.2"
 pytest = "8.3.3"
 pytest-github-actions-annotate-failures = "0.2.0"
+types-pyyaml = "^6.0.12.20240917"
 
 [tool.poetry-plugin-bump]
 commit_msg = 'bump: v{version}'
@@ -47,6 +48,7 @@ ignore_missing_imports = true
 
 [tool.black]
 target_version = ['py310']
+extend-exclude = 'vendor'
 
 [tool.ruff]
 target-version = "py310"
