@@ -5,7 +5,7 @@ from datetime import date
 from bgm_tv_wiki import Wiki
 
 from app.model import SubjectType
-from vendor.common.platform import PLATFORM_CONFIG
+from vendor.common.py.platform import PLATFORM_CONFIG, SortKeys
 
 
 __patterns = [
@@ -44,22 +44,14 @@ class Date(NamedTuple):
 
 default_sort_keys = ("放送开始", "发行日期", "开始")
 
-platform_default_sort_keys = {
-    SubjectType.Book: ("发售日", "开始"),
-    SubjectType.Anime: default_sort_keys,
-    SubjectType.Music: default_sort_keys,
-    SubjectType.Game: default_sort_keys,
-    SubjectType.Real: default_sort_keys,
-}
-
 
 def __get_sort_keys(subject_type: SubjectType, platform: int) -> tuple[str, ...]:
     p = PLATFORM_CONFIG.get(subject_type, {}).get(platform)
     if p is not None:
-        if p.sortKeys:
-            return p.sortKeys
+        if p.sort_keys:
+            return p.sort_keys
 
-    return platform_default_sort_keys.get(subject_type, default_sort_keys)
+    return SortKeys.get(subject_type, default_sort_keys)
 
 
 def extract_date(w: Wiki, subject_type: SubjectType, platform: int) -> Date | None:
