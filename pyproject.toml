@@ -11,7 +11,7 @@ bgm-tv-wiki = "0.0.23"
 sqlalchemy = "2.0.35"
 pymysql = "1.1.1"
 pyyaml = "6.0.2"
-sslog = "^0.0.0a47"
+sslog = "0.0.0a47"
 
 [tool.poetry.group.dev.dependencies]
 # linter and formatter
