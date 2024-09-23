@@ -3,7 +3,7 @@ from collections.abc import Iterable
 import msgspec
 import pymemcache
 from kafka import KafkaConsumer
-from loguru import logger
+from sslog import logger
 from kafka.consumer.fetcher import ConsumerRecord
 
 from app import config

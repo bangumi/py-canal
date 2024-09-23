@@ -4,7 +4,7 @@ from collections.abc import Iterable
 
 import msgspec
 from kafka import KafkaConsumer
-from loguru import logger
+from sslog import logger
 from bgm_tv_wiki import WikiSyntaxError, parse
 from kafka.consumer.fetcher import ConsumerRecord
 
