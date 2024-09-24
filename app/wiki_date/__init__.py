@@ -1,4 +1,3 @@
-import contextlib
 from dataclasses import dataclass
 from collections.abc import Iterable
 
@@ -41,16 +40,12 @@ def __wiki_date_kafka_events() -> Iterable[ChiiSubject]:
         value: KafkaMessageValue[ChiiSubject] = decoder.decode(msg.value)
         if value.op == Op.Delete:
             continue
-
-        before = value.before
         after = value.after
 
         if after is None:
             continue
-        elif before is None:
-            yield after
-        elif after.field_infobox != before.field_infobox:
-            yield after
+
+        yield after
 
 
 @logger.catch
@@ -66,7 +61,7 @@ def wiki_date() -> None:
             except WikiSyntaxError:
                 continue
 
-            with contextlib.suppress(Exception):
+            try:
                 date = extract_date(
                     w, subject.subject_type_id, subject.subject_platform
                 )
@@ -82,3 +77,5 @@ def wiki_date() -> None:
                             """,
                         [date.year, date.month, date.to_date(), subject.subject_id],
                     )
+            except Exception:
+                logger.exception("failed to set update subject date")
