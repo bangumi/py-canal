@@ -28,6 +28,19 @@ def test_parse_date() -> None:
             0,
             Date(1999, 2, 28),
         ),
+        [
+            """
+{{Infobox animanga/Novel"
+|发售日={
+[2024-09-28（旭儒预售）]
+[2023-08-12（星文预售）]
+}
+}}
+        """.splitlines(),
+            SubjectType.Book,
+            0,
+            Date(2024, 9, 28),
+        ],
     ],
 )
 def test_extract_date(
