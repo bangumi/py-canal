@@ -22,6 +22,12 @@ def test_parse_date() -> None:
             0,
             Date(1886, 1, 5),
         ),
+        (
+            ["{{Infobox animanga/Novel", "|放送开始={", "[1999-02-28]", "}", "}}"],
+            SubjectType.Anime,
+            0,
+            Date(1999, 2, 28),
+        ),
     ],
 )
 def test_extract_date(

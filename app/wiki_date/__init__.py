@@ -10,7 +10,7 @@ from kafka.consumer.fetcher import ConsumerRecord
 
 from app import config
 from app.db import create_engine
-from app.model import Op, KafkaValue, SubjectType
+from app.model import Op, SubjectType, KafkaMessageValue
 from app.wiki_date.extract_date import extract_date
 
 
@@ -23,7 +23,7 @@ class ChiiSubject:
     subject_ban: int
 
 
-decoder = msgspec.json.Decoder(KafkaValue[ChiiSubject])
+decoder = msgspec.json.Decoder(KafkaMessageValue[ChiiSubject])
 
 
 def __wiki_date_kafka_events() -> Iterable[ChiiSubject]:
@@ -38,21 +38,18 @@ def __wiki_date_kafka_events() -> Iterable[ChiiSubject]:
     for msg in consumer:
         if not msg.value:
             continue
-        value: KafkaValue[ChiiSubject] = decoder.decode(msg.value)
-        before = value.payload.before
-        after = value.payload.after
-
-        if value.payload.op == Op.Delete:
+        value: KafkaMessageValue[ChiiSubject] = decoder.decode(msg.value)
+        if value.op == Op.Delete:
             continue
+
+        before = value.before
+        after = value.after
 
         if after is None:
             continue
-
-        if before is None:
+        elif before is None:
             yield after
-            continue
-
-        if after.field_infobox != before.field_infobox:
+        elif after.field_infobox != before.field_infobox:
             yield after
 
 

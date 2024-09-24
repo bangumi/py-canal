@@ -13,14 +13,10 @@ class Op(str, enum.Enum):
 T = TypeVar("T")
 
 
-class ValuePayload(msgspec.Struct, Generic[T]):
+class KafkaMessageValue(msgspec.Struct, Generic[T]):
     before: T | None
     after: T | None
     op: str  # 'r', 'c', 'd' ...
-
-
-class KafkaValue(msgspec.Struct, Generic[T]):
-    payload: ValuePayload[T]
 
 
 class SubjectType(enum.IntEnum):

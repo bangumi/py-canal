@@ -7,7 +7,7 @@ from sslog import logger
 from kafka.consumer.fetcher import ConsumerRecord
 
 from app import config
-from app.model import KafkaValue
+from app.model import KafkaMessageValue
 
 
 class ChiiInterest(msgspec.Struct):
@@ -42,13 +42,13 @@ def clean_cache_kafka_events() -> Iterable[tuple[int, int]]:
     )
 
     msg: ConsumerRecord
-    decoder = msgspec.json.Decoder(KafkaValue[ChiiInterest])
+    decoder = msgspec.json.Decoder(KafkaMessageValue[ChiiInterest])
     for msg in consumer:
         if not msg.value:
             continue
-        value = decoder.decode(msg.value)
-        before = value.payload.before
-        after = value.payload.after
+        value: KafkaMessageValue[ChiiInterest] = decoder.decode(msg.value)
+        before = value.before
+        after = value.after
         if after is not None:
             yield after.interest_uid, after.interest_subject_id
         elif before is not None:
