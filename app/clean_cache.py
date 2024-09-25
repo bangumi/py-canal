@@ -59,7 +59,7 @@ def clean_cache_kafka_events() -> Iterable[tuple[int, int]]:
 def clean_cache() -> None:
     if not config.MEMCACHED:
         return
-    logger.info("start")
+    logger.info("start clean_cache")
     client = pymemcache.Client(config.MEMCACHED)
     v = client.version().decode()
     logger.info("memcached version {}", v)
@@ -68,3 +68,7 @@ def clean_cache() -> None:
             logger.debug("event: user {} subject {}", user_id, subject_id)
             client.delete(f"prg_ep_status_{user_id}", True)  # MC_PRG_STATUS
             client.delete(f"prg_watching_v3_{user_id}", True)  # MC_PRG_WATCHING
+
+
+if __name__ == "__main__":
+    clean_cache()

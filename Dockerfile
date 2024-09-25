@@ -29,6 +29,4 @@ RUN pip install -U pip && \
 
 WORKDIR /app
 
-ENTRYPOINT [ "python", "-m", "app" ]
-
 COPY . .

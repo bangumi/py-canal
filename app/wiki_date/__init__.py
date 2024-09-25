@@ -50,7 +50,7 @@ def __wiki_date_kafka_events() -> Iterable[ChiiSubject]:
 
 @logger.catch
 def wiki_date() -> None:
-    logger.info("start")
+    logger.info("start wiki_date")
     engine = create_engine()
 
     while True:
