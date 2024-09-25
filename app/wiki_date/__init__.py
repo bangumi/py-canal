@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from typing import NamedTuple
 from collections.abc import Iterable
 
 import msgspec
@@ -13,8 +13,7 @@ from app.model import Op, SubjectType, KafkaMessageValue
 from app.wiki_date.extract_date import extract_date
 
 
-@dataclass(kw_only=True, frozen=True, slots=True)
-class ChiiSubject:
+class ChiiSubject(msgspec.Struct):
     subject_id: int
     field_infobox: str
     subject_type_id: SubjectType
@@ -22,12 +21,28 @@ class ChiiSubject:
     subject_ban: int
 
 
+class ChiiSubjectRev(msgspec.Struct):
+    rev_subject_id: int
+    rev_field_infobox: str
+    rev_type_id: SubjectType
+    rev_platform: int
+
+
+class SubjectChange(NamedTuple):
+    subject_id: int
+    infobox: str
+    type_id: SubjectType
+    platform: int
+
+
 decoder = msgspec.json.Decoder(KafkaMessageValue[ChiiSubject])
+rev_decoder = msgspec.json.Decoder(KafkaMessageValue[ChiiSubjectRev])
 
 
-def __wiki_date_kafka_events() -> Iterable[ChiiSubject]:
+def __wiki_date_kafka_events() -> Iterable[SubjectChange]:
     consumer = KafkaConsumer(
         "debezium.chii.bangumi.chii_subjects",
+        "debezium.chii.bangumi.chii_subject_revisions",
         group_id="py-cache-clean",
         bootstrap_servers=f"{config.broker.hostname}:{config.broker.port}",
         auto_offset_reset="earliest",
@@ -37,6 +52,17 @@ def __wiki_date_kafka_events() -> Iterable[ChiiSubject]:
     for msg in consumer:
         if not msg.value:
             continue
+        if msg.topic.endswith("chii_subject_revisions"):
+            rev: KafkaMessageValue[ChiiSubjectRev] = rev_decoder.decode(msg.value)
+            if rev.after is not None:
+                yield SubjectChange(
+                    subject_id=rev.after.rev_subject_id,
+                    infobox=rev.after.rev_field_infobox,
+                    platform=rev.after.rev_platform,
+                    type_id=rev.after.rev_type_id,
+                )
+            continue
+
         value: KafkaMessageValue[ChiiSubject] = decoder.decode(msg.value)
         if value.op == Op.Delete:
             continue
@@ -45,7 +71,12 @@ def __wiki_date_kafka_events() -> Iterable[ChiiSubject]:
         if after is None:
             continue
 
-        yield after
+        yield SubjectChange(
+            subject_id=after.subject_id,
+            infobox=after.field_infobox,
+            platform=after.subject_platform,
+            type_id=after.subject_type_id,
+        )
 
 
 @logger.catch
@@ -57,14 +88,12 @@ def wiki_date() -> None:
         for subject in __wiki_date_kafka_events():
             logger.info("event: subject wiki change {}", subject.subject_id)
             try:
-                w = parse(subject.field_infobox)
+                w = parse(subject.infobox)
             except WikiSyntaxError:
                 continue
 
             try:
-                date = extract_date(
-                    w, subject.subject_type_id, subject.subject_platform
-                )
+                date = extract_date(w, subject.type_id, subject.platform)
                 if date is None:
                     continue
 
