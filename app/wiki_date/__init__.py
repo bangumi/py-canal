@@ -99,8 +99,9 @@ def wiki_date() -> None:
                 if date is None:
                     continue
 
-                with engine.connect() as conn:
-                    conn.connection.cursor().execute(
+                with engine.connect() as connection:
+                    conn = connection.connection
+                    conn.cursor().execute(
                         """
                             update chii_subject_fields
                             set field_year = %s, field_mon = %s, field_date = %s
@@ -108,5 +109,6 @@ def wiki_date() -> None:
                             """,
                         [date.year, date.month, date.to_date(), subject.subject_id],
                     )
+                    conn.commit()
             except Exception:
                 logger.exception("failed to set update subject date")

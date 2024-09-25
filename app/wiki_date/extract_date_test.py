@@ -41,6 +41,24 @@ def test_parse_date() -> None:
             0,
             Date(2024, 9, 28),
         ],
+        [
+            """
+        {{Infobox animanga/TVAnime
+|中文名= Bangumi Wiki 动画测试用沙盘
+|别名={
+[Wiki Sandbox]
+[沙盒少女 test]
+}
+|话数= 9
+|放送开始={
+[1998-11-01]
+[1996-01-01 (test)]
+}
+}}""".splitlines(),
+            SubjectType.Anime,
+            5,
+            Date(1998, 11, 1),
+        ],
     ],
 )
 def test_extract_date(
