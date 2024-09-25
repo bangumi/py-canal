@@ -1,5 +1,6 @@
 import enum
 from typing import Generic, TypeVar
+from datetime import datetime
 
 import msgspec
 
@@ -13,10 +14,19 @@ class Op(str, enum.Enum):
 T = TypeVar("T")
 
 
+class Source(msgspec.Struct):
+    ts_ms: int
+
+    def timestamp(self):
+        return datetime.fromtimestamp(self.ts_ms / 1000).astimezone()
+
+
 class KafkaMessageValue(msgspec.Struct, Generic[T]):
     before: T | None
     after: T | None
     op: str  # 'r', 'c', 'd' ...
+
+    source: Source
 
 
 class SubjectType(enum.IntEnum):

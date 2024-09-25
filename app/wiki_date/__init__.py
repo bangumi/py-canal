@@ -1,7 +1,10 @@
 import time
+import logging
 from typing import NamedTuple
+from datetime import datetime
 from collections.abc import Iterable
 
+import sslog
 import msgspec
 from kafka import KafkaConsumer
 from sslog import logger
@@ -12,6 +15,9 @@ from app import config
 from app.db import create_engine
 from app.model import Op, SubjectType, KafkaMessageValue
 from app.wiki_date.extract_date import extract_date
+
+
+logging.basicConfig(handlers=[sslog.InterceptHandler()])
 
 
 class ChiiSubject(msgspec.Struct):
@@ -34,6 +40,7 @@ class SubjectChange(NamedTuple):
     infobox: str
     type_id: SubjectType
     platform: int
+    ts: datetime
 
 
 decoder = msgspec.json.Decoder(KafkaMessageValue[ChiiSubject])
@@ -51,6 +58,11 @@ def __wiki_date_kafka_events() -> Iterable[SubjectChange]:
 
     msg: ConsumerRecord
     for msg in consumer:
+        logger.debug(
+            "msg",
+            topic=msg.topic,
+            offset=msg.offset,
+        )
         if not msg.value:
             continue
         if msg.topic.endswith("chii_subject_revisions"):
@@ -61,6 +73,7 @@ def __wiki_date_kafka_events() -> Iterable[SubjectChange]:
                     infobox=rev.after.rev_field_infobox,
                     platform=rev.after.rev_platform,
                     type_id=rev.after.rev_type_id,
+                    ts=rev.source.timestamp(),
                 )
             continue
 
@@ -77,6 +90,7 @@ def __wiki_date_kafka_events() -> Iterable[SubjectChange]:
             infobox=after.field_infobox,
             platform=after.subject_platform,
             type_id=after.subject_type_id,
+            ts=value.source.timestamp(),
         )
 
 
@@ -87,8 +101,13 @@ def wiki_date() -> None:
 
     while True:
         for subject in __wiki_date_kafka_events():
-            logger.info("event: subject wiki change {}", subject.subject_id)
             time.sleep(1)
+            logger.info(
+                "event: subject wiki change",
+                subject_id=subject.subject_id,
+                ts=subject.ts.isoformat(sep=" "),
+                delay=str(datetime.now().astimezone() - subject.ts),
+            )
             try:
                 w = parse(subject.infobox)
             except WikiSyntaxError:
@@ -99,16 +118,20 @@ def wiki_date() -> None:
                 if date is None:
                     continue
 
-                with engine.connect() as connection:
-                    conn = connection.connection
-                    conn.cursor().execute(
-                        """
+                with engine.connect() as conn:
+                    with conn.begin() as txn:
+                        conn.connection.cursor().execute(
+                            """
                             update chii_subject_fields
                             set field_year = %s, field_mon = %s, field_date = %s
                             where field_sid = %s
                             """,
-                        [date.year, date.month, date.to_date(), subject.subject_id],
-                    )
-                    conn.commit()
+                            [date.year, date.month, date.to_date(), subject.subject_id],
+                        )
+                        txn.commit()
             except Exception:
                 logger.exception("failed to set update subject date")
+
+
+if __name__ == "__main__":
+    wiki_date()
