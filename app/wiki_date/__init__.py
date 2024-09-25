@@ -1,7 +1,7 @@
 import time
 import logging
 from typing import NamedTuple
-from datetime import datetime
+from datetime import datetime, timedelta
 from collections.abc import Iterable
 
 import sslog
@@ -94,6 +94,9 @@ def __wiki_date_kafka_events() -> Iterable[SubjectChange]:
         )
 
 
+__no_delay_threshold = timedelta(seconds=2)
+
+
 @logger.catch
 def wiki_date() -> None:
     logger.info("start wiki_date")
@@ -101,13 +104,18 @@ def wiki_date() -> None:
 
     while True:
         for subject in __wiki_date_kafka_events():
-            time.sleep(0.2)
+            delay = datetime.now().astimezone() - subject.ts
             logger.info(
                 "event: subject wiki change",
                 subject_id=subject.subject_id,
                 ts=subject.ts.isoformat(sep=" "),
-                delay=str(datetime.now().astimezone() - subject.ts),
+                delay=str(delay),
             )
+
+            # only wait if row is just edited
+            if delay <= __no_delay_threshold:
+                time.sleep(1)
+
             try:
                 w = parse(subject.infobox)
             except WikiSyntaxError:
