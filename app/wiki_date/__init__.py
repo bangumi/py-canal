@@ -101,7 +101,7 @@ def wiki_date() -> None:
 
     while True:
         for subject in __wiki_date_kafka_events():
-            time.sleep(1)
+            time.sleep(0.2)
             logger.info(
                 "event: subject wiki change",
                 subject_id=subject.subject_id,
