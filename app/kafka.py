@@ -10,7 +10,7 @@ class Msg(NamedTuple):
     topic: str
     offset: int
     key: bytes | None
-    value: str | bytes
+    value: bytes
 
 
 class KafkaConsumer:
