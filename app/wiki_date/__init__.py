@@ -1,3 +1,4 @@
+import time
 from typing import NamedTuple
 from collections.abc import Iterable
 
@@ -87,6 +88,7 @@ def wiki_date() -> None:
     while True:
         for subject in __wiki_date_kafka_events():
             logger.info("event: subject wiki change {}", subject.subject_id)
+            time.sleep(1)
             try:
                 w = parse(subject.infobox)
             except WikiSyntaxError:
