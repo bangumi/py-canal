@@ -17,7 +17,7 @@ T = TypeVar("T")
 class Source(msgspec.Struct):
     ts_ms: int
 
-    def timestamp(self):
+    def timestamp(self) -> datetime:
         return datetime.fromtimestamp(self.ts_ms / 1000).astimezone()
 
 
