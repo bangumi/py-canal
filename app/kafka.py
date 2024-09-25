@@ -26,7 +26,7 @@ class KafkaConsumer:
 
     def __iter__(self) -> Iterator[Msg]:
         while True:
-            msg = self.c.poll(None)
+            msg = self.c.poll(30)
             if msg is None:
                 continue
 
