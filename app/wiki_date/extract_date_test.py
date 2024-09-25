@@ -43,7 +43,7 @@ def test_parse_date() -> None:
         ],
         [
             """
-        {{Infobox animanga/TVAnime
+{{Infobox animanga/TVAnime
 |中文名= Bangumi Wiki 动画测试用沙盘
 |别名={
 [Wiki Sandbox]
@@ -59,6 +59,46 @@ def test_parse_date() -> None:
             5,
             Date(1998, 11, 1),
         ],
+        [
+            """
+{{Infobox Game
+|发行日期= 2025
+}}
+""".splitlines(),
+            SubjectType.Game,
+            4041,
+            Date(2025, 0, 0),
+        ],
+        [
+            """
+{{Infobox Game
+|发行日期= 2025-01
+}}
+""".splitlines(),
+            SubjectType.Game,
+            4041,
+            Date(2025, 1),
+        ],
+        [
+            """
+{{Infobox Game
+|发行日期= 2025-5
+}}
+""".splitlines(),
+            SubjectType.Game,
+            4041,
+            Date(2025, 5),
+        ],
+        [
+            """
+{{Infobox Game
+|发行日期= 2025年4月
+}}
+""".splitlines(),
+            SubjectType.Game,
+            4041,
+            Date(2025, 4),
+        ],
     ],
 )
 def test_extract_date(
@@ -67,4 +107,5 @@ def test_extract_date(
     platform: int,
     date: Date,
 ) -> None:
-    assert extract_date(parse("\n".join(infobox)), type_id, platform) == date
+    actual = extract_date(parse("\n".join(infobox)), type_id, platform)
+    assert actual == date

@@ -30,6 +30,8 @@ __patterns = [
     re.compile(r"^(?P<year>\d{4})-(?P<month>\d{1,2})-(?P<day>\d{1,2})[ ([（].*$"),
     # YYYY年(MM月)?(DD日)?
     re.compile(r"^(?P<year>\d{4})年(?:(?P<month>\d{1,2})月)?(?:(?P<day>\d{1,2})日)?"),
+    # YYYY[-MM[-DD]]
+    re.compile(r"^(?P<year>\d{4})(?:-(?P<month>\d{1,2}))?(?:-(?P<day>\d{1,2}))?"),
 ]
 
 
