@@ -2,11 +2,10 @@ from collections.abc import Iterable
 
 import msgspec
 import pymemcache
-from kafka import KafkaConsumer
 from sslog import logger
-from kafka.consumer.fetcher import ConsumerRecord
 
 from app import config
+from app.kafka import KafkaConsumer
 from app.model import KafkaMessageValue
 
 
@@ -34,18 +33,10 @@ class ChiiInterest(msgspec.Struct):
 
 
 def clean_cache_kafka_events() -> Iterable[tuple[int, int]]:
-    consumer = KafkaConsumer(
-        "debezium.chii.bangumi.chii_subject_interests",
-        group_id="py-cache-clean",
-        bootstrap_servers=f"{config.broker.hostname}:{config.broker.port}",
-        auto_offset_reset="earliest",
-    )
+    consumer = KafkaConsumer("debezium.chii.bangumi.chii_subject_interests")
 
-    msg: ConsumerRecord
     decoder = msgspec.json.Decoder(KafkaMessageValue[ChiiInterest])
     for msg in consumer:
-        if not msg.value:
-            continue
         value: KafkaMessageValue[ChiiInterest] = decoder.decode(msg.value)
         before = value.before
         after = value.after

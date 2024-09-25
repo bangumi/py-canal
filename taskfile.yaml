@@ -20,6 +20,11 @@ tasks:
     cmds:
       - python app/main.py
 
+  wiki:
+    dotenv: [ .env ]
+    cmds:
+      - python -m app.wiki_date
+
   run:
     dotenv: [ .env ]
     cmds:

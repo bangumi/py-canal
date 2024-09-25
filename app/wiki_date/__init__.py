@@ -6,13 +6,11 @@ from collections.abc import Iterable
 
 import sslog
 import msgspec
-from kafka import KafkaConsumer
 from sslog import logger
 from bgm_tv_wiki import WikiSyntaxError, parse
-from kafka.consumer.fetcher import ConsumerRecord
 
-from app import config
 from app.db import create_engine
+from app.kafka import KafkaConsumer
 from app.model import Op, SubjectType, KafkaMessageValue
 from app.wiki_date.extract_date import extract_date
 
@@ -48,23 +46,14 @@ rev_decoder = msgspec.json.Decoder(KafkaMessageValue[ChiiSubjectRev])
 
 
 def __wiki_date_kafka_events() -> Iterable[SubjectChange]:
-    consumer = KafkaConsumer(
+    c = KafkaConsumer(
         "debezium.chii.bangumi.chii_subjects",
         "debezium.chii.bangumi.chii_subject_revisions",
-        group_id="py-cache-clean",
-        bootstrap_servers=f"{config.broker.hostname}:{config.broker.port}",
-        auto_offset_reset="earliest",
     )
 
-    msg: ConsumerRecord
-    for msg in consumer:
-        logger.debug(
-            "msg",
-            topic=msg.topic,
-            offset=msg.offset,
-        )
-        if not msg.value:
-            continue
+    for msg in c:
+        logger.debug("new kafka msg", topic=msg.topic, offset=msg.offset)
+
         if msg.topic.endswith("chii_subject_revisions"):
             rev: KafkaMessageValue[ChiiSubjectRev] = rev_decoder.decode(msg.value)
             if rev.after is not None:
