@@ -123,7 +123,12 @@ def wiki_date() -> None:
                             set field_year = %s, field_mon = %s, field_date = %s
                             where field_sid = %s
                             """,
-                            [date.year, date.month, date.to_date(), subject.subject_id],
+                            [
+                                date.year,
+                                date.month or 1,
+                                date.to_date(),
+                                subject.subject_id,
+                            ],
                         )
                         txn.commit()
             except Exception:
