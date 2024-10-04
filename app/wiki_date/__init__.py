@@ -132,7 +132,9 @@ def wiki_date() -> None:
                         )
                         txn.commit()
             except Exception:
-                logger.exception("failed to set update subject date")
+                logger.exception(
+                    "failed to set update subject date", subject=subject.subject_id
+                )
 
 
 if __name__ == "__main__":
