@@ -7,6 +7,7 @@ from collections.abc import Iterable
 import sslog
 import msgspec
 from sslog import logger
+from sqlalchemy import text
 from bgm_tv_wiki import WikiSyntaxError, parse
 
 from app.db import create_engine
@@ -115,22 +116,22 @@ def wiki_date() -> None:
                 if date is None:
                     continue
 
-                with engine.connect() as conn:
-                    with conn.begin() as txn:
-                        conn.connection.cursor().execute(
+                with engine.begin() as txn:
+                    txn.execute(
+                        text(
                             """
                             update chii_subject_fields
-                            set field_year = %s, field_mon = %s, field_date = %s
-                            where field_sid = %s
-                            """,
-                            [
-                                date.year,
-                                date.month,
-                                date.to_date(),
-                                subject.subject_id,
-                            ],
-                        )
-                        txn.commit()
+                            set field_year = :year, field_mon = :month, field_date = :date
+                            where field_sid = :subject_id
+                            """
+                        ),
+                        {
+                            "year": date.year,
+                            "month": date.month,
+                            "date": date.to_date(),
+                            "subject_id": subject.subject_id,
+                        },
+                    )
             except Exception:
                 logger.exception(
                     "failed to set update subject date", subject=subject.subject_id
