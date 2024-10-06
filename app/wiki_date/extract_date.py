@@ -1,11 +1,12 @@
 import re
+import functools
 from typing import NamedTuple
 from datetime import date
 
 from bgm_tv_wiki import Wiki
 
 from app.model import SubjectType
-from vendor.common.py.platform import PLATFORM_CONFIG, SortKeys
+from vendor.common.py.platform import PLATFORM_CONFIG, PLATFORM_DEFAULT
 
 
 __patterns = [
@@ -44,16 +45,14 @@ class Date(NamedTuple):
         return date(self.year, self.month or 1, self.day or 1)
 
 
-default_sort_keys = ("放送开始", "发行日期", "开始")
-
-
+@functools.cache
 def __get_sort_keys(subject_type: SubjectType, platform: int) -> tuple[str, ...]:
     p = PLATFORM_CONFIG.get(subject_type, {}).get(platform)
     if p is not None:
         if p.sort_keys:
             return p.sort_keys
 
-    return SortKeys.get(subject_type, default_sort_keys)
+    return PLATFORM_DEFAULT[subject_type].sort_keys
 
 
 def extract_date(w: Wiki, subject_type: SubjectType, platform: int) -> Date | None:
