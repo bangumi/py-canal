@@ -5,10 +5,11 @@ from sqlalchemy import text
 from bgm_tv_wiki import WikiSyntaxError, parse
 
 from app.db import create_engine
-from app.wiki_date import extract_date
+
+from .extract_date import extract_date
 
 
-def main():
+def main() -> None:
     engine = create_engine()
     with (
         engine.begin() as conn,
