@@ -95,7 +95,7 @@ def wiki_date() -> None:
     while True:
         for subject in __wiki_date_kafka_events():
             delay = datetime.now().astimezone() - subject.ts
-            logger.info(
+            logger.debug(
                 "event: subject wiki change",
                 subject_id=subject.subject_id,
                 ts=subject.ts.isoformat(sep=" "),
