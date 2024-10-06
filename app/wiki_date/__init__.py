@@ -125,7 +125,7 @@ def wiki_date() -> None:
                             """,
                             [
                                 date.year,
-                                date.month or 1,
+                                date.month,
                                 date.to_date(),
                                 subject.subject_id,
                             ],
