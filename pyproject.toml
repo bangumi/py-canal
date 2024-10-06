@@ -14,7 +14,7 @@ sslog = "0.0.0a48"
 confluent-kafka = "2.5.3"
 
 [tool.poetry.group.dev.dependencies]
-tqdm = "^4.66.5"
+tqdm = "4.66.5"
 # linter and formatter
 pre-commit = "==3.8.0"
 mypy = "==1.11.2"
