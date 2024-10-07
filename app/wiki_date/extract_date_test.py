@@ -11,6 +11,10 @@ def test_parse_date() -> None:
     assert parse_str("2017-12-22(2018年1月5日・12日合併号)") == Date(2017, 12, 22)
     assert parse_str("2025年") == Date(2025)
     assert parse_str("1886-01-05") == Date(1886, 1, 5)
+    assert parse_str("2024.5.18（预售）") == Date(2024, 5, 18)
+    assert parse_str("2024-05-01（预售）") == Date(2024, 5, 1)
+    assert parse_str("2024.10.12（预售）") == Date(2024, 10, 12)
+    assert parse_str("2024.10.12") == Date(2024, 10, 12)
 
 
 @pytest.mark.parametrize(
