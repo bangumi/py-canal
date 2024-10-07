@@ -3,7 +3,7 @@
   "extends": [
     "local>Trim21/renovate-config",
     "local>Trim21/renovate-config:monthly",
-    "local>Tgit:poetry"
+    "local>Trim21/renovate-config:poetry"
   ],
   "separateMajorMinor": true,
   "separateMinorPatch": false,
