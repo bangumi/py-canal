@@ -41,8 +41,10 @@ class Date(NamedTuple):
     month: int = 0
     day: int = 0
 
-    def to_date(self) -> date:
-        return date(self.year, self.month or 1, self.day or 1)
+    def to_date(self) -> str:
+        if not self.year:
+            return "0000-00-00"
+        return date(self.year, self.month or 1, self.day or 1).strftime("%Y-%m-%d")
 
 
 @functools.cache

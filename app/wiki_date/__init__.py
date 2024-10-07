@@ -13,7 +13,7 @@ from bgm_tv_wiki import WikiSyntaxError, parse
 from app.db import create_engine
 from app.kafka import KafkaConsumer
 from app.model import Op, SubjectType, KafkaMessageValue
-from app.wiki_date.extract_date import extract_date
+from app.wiki_date.extract_date import Date, extract_date
 
 
 logging.basicConfig(handlers=[sslog.InterceptHandler()])
@@ -115,6 +115,9 @@ def wiki_date() -> None:
                 date = extract_date(w, subject.type_id, subject.platform)
                 if date is None:
                     continue
+
+                if date.year >= 2099 or date.month >= 13:
+                    date = Date(0, 0, 0)
 
                 with engine.begin() as txn:
                     txn.execute(
