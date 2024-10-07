@@ -5,8 +5,7 @@ from sqlalchemy import text
 from bgm_tv_wiki import WikiSyntaxError, parse
 
 from app.db import create_engine
-
-from .extract_date import extract_date
+from app.wiki_date.extract_date import extract_date
 
 
 def main() -> None:
@@ -16,7 +15,7 @@ def main() -> None:
         conn.execution_options(yield_per=100).execute(
             text(
                 """
-            SELECT subject_id,subject_name,subject_name_cn,subject_type_id,subject_platform,field_infobox
+            SELECT subject_id,subject_type_id,subject_platform,field_infobox,field_year,field_mon
             FROM chii_subjects
             INNER JOIN chii_subject_fields ON field_sid = subject_id
             where (
@@ -30,19 +29,19 @@ def main() -> None:
     ):
         for (
             subject_id,
-            subject_name,
-            subject_name_cn,
             subject_type_id,
             subject_platform,
             field_infobox,
+            field_year,
+            field_mon,
         ) in tqdm(itertools.chain.from_iterable(result.partitions()), ascii=True):
             try:
                 w = parse(field_infobox)
             except WikiSyntaxError:
                 continue
 
-            date = extract_date(w, subject_id, subject_platform)
-            if date is None:
+            date = extract_date(w, subject_type_id, subject_platform)
+            if date.year == field_year and field_mon == date.month:
                 continue
 
             with engine.begin() as txn:

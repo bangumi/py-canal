@@ -56,7 +56,7 @@ def __get_sort_keys(subject_type: SubjectType, platform: int) -> tuple[str, ...]
     return PLATFORM_DEFAULT[subject_type].sort_keys
 
 
-def extract_date(w: Wiki, subject_type: SubjectType, platform: int) -> Date | None:
+def extract_date(w: Wiki, subject_type: SubjectType, platform: int) -> Date:
     keys = __get_sort_keys(subject_type, platform)
 
     for key in keys:
@@ -65,10 +65,10 @@ def extract_date(w: Wiki, subject_type: SubjectType, platform: int) -> Date | No
             continue
         return parse_str(values[0])
 
-    return None
+    return Date(0, 0, 0)
 
 
-def parse_str(s: str) -> Date | None:
+def parse_str(s: str) -> Date:
     for pattern in __patterns:
         if m := pattern.match(s):
             try:
@@ -82,7 +82,11 @@ def parse_str(s: str) -> Date | None:
                 else:
                     day = 0
             except ValueError:
-                return None
+                return Date(0, 0, 0)
+
+            if year >= 2099 or month >= 13:
+                return Date(0, 0, 0)
+
             return Date(year, month, day)
 
-    return None
+    return Date(0, 0, 0)
