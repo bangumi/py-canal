@@ -22,7 +22,9 @@ pytest = "8.3.3"
 pytest-github-actions-annotate-failures = "0.2.0"
 types-pyyaml = "^6.0.12.20240917"
 
-confluent-kafka-stubs = { git = 'https://gitlab.com/Trim21/confluent-kafka-stubs.git', rev = '9484f4aad44eab371fe952b278ab2715f3a8c780' }
+[tool.poetry.group.dev.dependencies.confluent-kafka-stubs]
+git = 'https://gitlab.com/Trim21/confluent-kafka-stubs.git'
+branch = 'main'
 
 [tool.poetry-plugin-bump]
 commit_msg = 'bump: v{version}'

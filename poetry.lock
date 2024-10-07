@@ -110,7 +110,7 @@ develop = false
 [package.source]
 type = "git"
 url = "https://gitlab.com/Trim21/confluent-kafka-stubs.git"
-reference = "9484f4aad44eab371fe952b278ab2715f3a8c780"
+reference = "main"
 resolved_reference = "9484f4aad44eab371fe952b278ab2715f3a8c780"
 
 [[package]]
@@ -233,7 +233,6 @@ files = [
     {file = "greenlet-3.1.1-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:d0028e725ee18175c6e422797c407874da24381ce0690d6b9396c204c7f7276e"},
     {file = "greenlet-3.1.1-cp39-cp39-win32.whl", hash = "sha256:5e06afd14cbaf9e00899fae69b24a32f2196c19de08fcb9f4779dd4f004e5e7c"},
     {file = "greenlet-3.1.1-cp39-cp39-win_amd64.whl", hash = "sha256:3319aa75e0e0639bc15ff54ca327e8dc7a6fe404003496e3c6925cd3142e0e22"},
-    {file = "greenlet-3.1.1.tar.gz", hash = "sha256:4ce3ac6cdb6adf7946475d7ef31777c26d94bccc377e070a7986bd2d5c515467"},
 ]
 
 [package.extras]
@@ -768,4 +767,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "41b158a8e66537802a08a5d429223eb75ba55b6690a44c41780cf3b0bc1f70bc"
+content-hash = "3dee4b46d642aa3c9c6552469086c2fbd81f35c89e5191812c90de2f85188dee"
