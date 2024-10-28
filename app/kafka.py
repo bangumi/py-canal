@@ -20,6 +20,7 @@ class KafkaConsumer:
                 "group.id": "py-cache-clean",
                 "bootstrap.servers": f"{config.broker.hostname}:{config.broker.port}",
                 "auto.offset.reset": "earliest",
+                "enable.auto.commit": False,
             }
         )
         self.c.subscribe(list(topics))
@@ -38,12 +39,17 @@ class KafkaConsumer:
             if msg_value is None:
                 continue
 
-            yield Msg(
-                topic=msg.topic() or "",
-                offset=msg.offset() or 0,
-                key=_ensure_binary(msg.key()),
-                value=msg_value,
-            )
+            try:
+                yield Msg(
+                    topic=msg.topic() or "",
+                    offset=msg.offset() or 0,
+                    key=_ensure_binary(msg.key()),
+                    value=msg_value,
+                )
+            except Exception:
+                logger.exception("failed to handle message")
+            else:
+                self.c.commit(msg)
 
 
 def _ensure_binary(s: str | bytes | None) -> bytes | None:
