@@ -16,7 +16,7 @@ confluent-kafka = "2.5.3"
 [tool.poetry.group.dev.dependencies]
 tqdm = "4.66.5"
 # linter and formatter
-pre-commit = "==4.0.0"
+pre-commit = "==4.0.1"
 mypy = "==1.11.2"
 pytest = "8.3.3"
 pytest-github-actions-annotate-failures = "0.2.0"
