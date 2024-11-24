@@ -22,15 +22,25 @@ def test_parse_date() -> None:
     ["infobox", "type_id", "platform", "date"],
     [
         (
-            ["{{Infobox animanga/Novel", "|发售日= 1886-01-05", "}}"],
+            [
+                "{{Infobox animanga/Novel",
+                "|发售日= 1886-01-05",
+                "}}",
+            ],
             SubjectType.Book,
             0,
             Date(1886, 1, 5),
         ),
         (
-            ["{{Infobox animanga/Novel", "|放送开始={", "[1999-02-28]", "}", "}}"],
+            [
+                "{{Infobox animanga/Novel",
+                "|放送开始={",
+                "[1999-02-28]",
+                "}",
+                "}}",
+            ],
             SubjectType.Anime,
-            0,
+            4,
             Date(1999, 2, 28),
         ),
         [
