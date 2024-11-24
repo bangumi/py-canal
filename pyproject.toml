@@ -11,7 +11,7 @@ sqlalchemy = "2.0.35"
 pymysql = "1.1.1"
 pyyaml = "6.0.2"
 sslog = "0.0.0a48"
-confluent-kafka = "2.5.3"
+confluent-kafka = "2.6.1"
 
 [tool.poetry.group.dev.dependencies]
 tqdm = "4.66.5"
