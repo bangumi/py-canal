@@ -4,7 +4,7 @@ version = "0"
 requires-python = "~=3.10.16"
 dependencies = [
     'msgspec == 0.18.6',
-    'sslog == 0.0.0a51',
+    'sslog ==0.0.0a52',
     'pymemcache == 4.0.0',
     'bgm-tv-wiki == 0.0.29',
     'sqlalchemy == 2.0.36',
