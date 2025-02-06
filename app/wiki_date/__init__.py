@@ -50,7 +50,7 @@ def __wiki_date_kafka_events() -> Iterable[SubjectChange]:
     c = KafkaConsumer(
         "debezium.chii.bangumi.chii_subjects",
         "debezium.chii.bangumi.chii_subject_revisions",
-        client_id="process-wiki-data",
+        group_id="process-wiki-data",
     )
 
     for msg in c:
