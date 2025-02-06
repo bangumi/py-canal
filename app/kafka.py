@@ -14,10 +14,10 @@ class Msg(NamedTuple):
 
 
 class KafkaConsumer:
-    def __init__(self, *topics: str):
+    def __init__(self, *topics: str, client_id: str):
         self.c = Consumer(
             {
-                "group.id": "py-cache-clean",
+                "client.id": client_id,
                 "bootstrap.servers": f"{config.broker.hostname}:{config.broker.port}",
                 "auto.offset.reset": "earliest",
                 "enable.auto.commit": False,

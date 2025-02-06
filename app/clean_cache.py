@@ -33,7 +33,9 @@ class ChiiInterest(msgspec.Struct):
 
 
 def clean_cache_kafka_events() -> Iterable[tuple[int, int]]:
-    consumer = KafkaConsumer("debezium.chii.bangumi.chii_subject_interests")
+    consumer = KafkaConsumer(
+        "debezium.chii.bangumi.chii_subject_interests", client_id="py-cache-clean"
+    )
 
     decoder = msgspec.json.Decoder(KafkaMessageValue[ChiiInterest])
     for msg in consumer:
