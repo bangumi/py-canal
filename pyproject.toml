@@ -17,7 +17,6 @@ dependencies = [
 dev = [
     'tqdm == 4.67.1',
     # linter and formatter
-    'pre-commit ==4.1.0',
     'mypy ==1.15.0',
     'pytest == 8.3.3',
     'pytest-github-actions-annotate-failures ==0.3.0',
