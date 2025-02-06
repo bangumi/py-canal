@@ -23,9 +23,6 @@ pytest-github-actions-annotate-failures = "0.2.0"
 types-pyyaml = "^6.0.12.20240917"
 types-confluent-kafka = { version = '1.3.1', python = '>=3.10,<3.13' }
 
-[tool.poetry-plugin-bump]
-commit_msg = 'bump: v{version}'
-
 [tool.coverage.run]
 concurrency = ['thread', 'greenlet']
 
