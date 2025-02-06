@@ -3,16 +3,14 @@ requires-python = ">=3.10.16, <3.11"
 
 [[package]]
 name = "bgm-tv-wiki"
-version = "0.0.29"
+version = "0.0.30"
 source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "typing-extensions" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/25/bf/23be7702ded6eb73f4989cbec5e9932c8f3a5b9f01dc206f128e5d36dc81/bgm_tv_wiki-0.0.29.tar.gz", hash = "sha256:eb072a96e87ad2041966a99b43045073db4a0cbb9586083c7fbcfe3bb6633b85", size = 6523 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c2/ce/ab34c236e377ad9f2b82bb7a1b16922bea4cf6627af43c11b5ad05a879dc/bgm_tv_wiki-0.0.29-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ef9e29bff149b71e0941ed12e9e579f7adee53848e194ea6b1ef6def5021a20e", size = 556092 },
-    { url = "https://files.pythonhosted.org/packages/bf/c7/16e778d3586a14db8203ece038ba2fee5489d5837ddf4b86dd1c0bb8123a/bgm_tv_wiki-0.0.29-cp310-cp310-win_amd64.whl", hash = "sha256:34f3cd38b3a49d4ffb92245f3827338800bd08cb7707a5b4730f9a000d6ba350", size = 103421 },
-    { url = "https://files.pythonhosted.org/packages/cc/cb/00eaa91952a59b9059ae389421bbf5884e5c1e1cae87a4212b7686f83ed8/bgm_tv_wiki-0.0.29-py3-none-any.whl", hash = "sha256:79968c286c633c0fee9a0ba60b04cd7ddbd60d163c9893d64cd596b7aca90808", size = 2102 },
+    { url = "https://files.pythonhosted.org/packages/9f/49/4ba2d2ba459c596e3d6b20741fe143fe5415f599491363d9fc80e1326f29/bgm_tv_wiki-0.0.30-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:569b12d7378a72bae4ab8cccdcf3bd7aade277cd7b90c685b629714cf1b98112", size = 116645 },
+    { url = "https://files.pythonhosted.org/packages/8e/55/a064f572930b7cfac30cdf796a1648ddc1922b723e5a75ae2243c06f47ac/bgm_tv_wiki-0.0.30-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:a304b7a924643df5d59065fa3223e9fcb761c1686e718a8f30b1556008632e26", size = 106043 },
+    { url = "https://files.pythonhosted.org/packages/70/90/6d055f4a6d148ca160422904ebf07ee14861fb2577caf11a061020d523dd/bgm_tv_wiki-0.0.30-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c390382212dd23130d81ff6ad7275106012d430339d10a2ce193c590c06d66bc", size = 144129 },
+    { url = "https://files.pythonhosted.org/packages/bf/38/e2bce47c7f544f83eb984b0467cc705d4eb3be4df0faa73c2fbb862ba4e1/bgm_tv_wiki-0.0.30-cp310-cp310-win_amd64.whl", hash = "sha256:a87ef44139031357971b8fd4379aa3a0eca5353f7aee1414978b7e0e5b734633", size = 150575 },
+    { url = "https://files.pythonhosted.org/packages/a9/5d/8b89491319eed1c780ac7a3703d5bd26613b5776a87d07bb161dd5656ea2/bgm_tv_wiki-0.0.30-py3-none-any.whl", hash = "sha256:16fe4fbc7880c2d3de73cb03ce18a116ce597aaa1e67f10628d2216826823c71", size = 5948 },
 ]
 
 [[package]]
@@ -232,7 +230,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "bgm-tv-wiki", specifier = "==0.0.29" },
+    { name = "bgm-tv-wiki", specifier = "==0.0.30" },
     { name = "confluent-kafka", specifier = "==2.8.0" },
     { name = "msgspec", specifier = "==0.18.6" },
     { name = "pymemcache", specifier = "==4.0.0" },
