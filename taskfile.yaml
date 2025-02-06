@@ -29,25 +29,3 @@ tasks:
     dotenv: [ .env ]
     cmds:
       - python {{.CLI_ARGS}}
-
-  lock:no-cache:
-    cmds:
-      - poetry lock --no-update --no-cache
-      - dos2unix.exe poetry.lock
-      - poetry install --sync
-
-  update:
-    cmds:
-      - poetry update
-      - dos2unix.exe poetry.lock
-      - poetry install --sync
-
-  lock:
-    cmds:
-      - poetry lock --no-update
-      - dos2unix.exe poetry.lock
-      - poetry install --sync
-
-  sync:
-    cmds:
-      - poetry install --sync
