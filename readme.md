@@ -5,9 +5,3 @@
 ```shell
 python -m app.wiki_date
 ```
-
-
-清除 memcached 中的过期缓存
-```shell
-python -m app.clean_cache
-```
