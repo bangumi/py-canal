@@ -6,7 +6,7 @@ dependencies = [
     'msgspec ==0.19.0',
     'sslog ==0.0.0a52',
     'bgm-tv-wiki ==0.0.30',
-    'sqlalchemy ==2.0.39',
+    'sqlalchemy ==2.0.40',
     'pymysql == 1.1.1',
     'pyyaml == 6.0.2',
     'confluent-kafka ==2.8.2',
